@@ -1,0 +1,66 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type GestContactInfoModel {
+  phone: String!
+  mail: String!
+}
+
+type ReservationModel {
+  id: ID!
+  guest_name: String!
+  gest_contact_info: GestContactInfoModel!
+  expected_arrival_time: DateTime!
+  table_size: Int!
+  owner: ID!
+  status: ReservationStatus!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+enum ReservationStatus {
+  SUCCESS
+  FAILED
+}
+
+type Query {
+  getList(where: ReservationWhereInput, skip: Float = 0, take: Float = 10, orderBy: OrderByArg): [ReservationModel!]
+  getById(id: String!): ReservationModel
+}
+
+input ReservationWhereInput {
+  AND: [ReservationWhereInput!]
+  OR: [ReservationWhereInput!]
+  NOT: [ReservationWhereInput!]
+  id: String
+  guest_name: String
+  expected_arrival_time_min: DateTime
+  owner: String
+  expected_arrival_time_mix: DateTime
+}
+
+input OrderByArg {
+  expected_arrival_time: String
+}
+
+type Mutation {
+  createReservation(data: ReservationCreateInput!): ReservationModel!
+  rescheduleReservation(id: String!, expected_arrival_time: DateTime!): ReservationModel
+  deleteReservation(id: String!): ReservationModel
+}
+
+input ReservationCreateInput {
+  guest_name: String!
+  gest_contact_info: GestContactInfoInput!
+  expected_arrival_time: DateTime!
+  table_size: Int!
+}
+
+input GestContactInfoInput {
+  phone: String!
+  mail: String!
+}
