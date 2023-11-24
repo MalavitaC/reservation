@@ -3,10 +3,7 @@
 // DO NOT CHANGE IT MANUALLY!
 import React from 'react';
 import {
-  Modal,
   ConfigProvider,
-  message,
-  notification,
 } from 'antd';
 import { ApplyPluginsType } from 'umi';
 import { getPluginManager } from '../core/plugin';

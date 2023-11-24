@@ -12,6 +12,11 @@ export default defineConfig({
       'changeOrigin': true,
       'pathRewrite': { '^/api' : '' },
     },
+    '/graphql': {
+      'target': 'http://localhost:3000',
+      'changeOrigin': true,
+      'pathRewrite': { '^/graphql' : '' },
+    },
   },
   layout: {
     title: '@umijs/max',
@@ -30,16 +35,6 @@ export default defineConfig({
       name: '预约 CURD',
       path: '/reservation',
       component: './Reservation',
-    },
-    {
-      name: '权限演示',
-      path: '/access',
-      component: './Access',
-    },
-    {
-      name: ' CRUD 示例',
-      path: '/table',
-      component: './Table',
     },
   ],
   npmClient: 'npm'

@@ -27,7 +27,7 @@
         "src/.umi/*"
       ],
       "@umijs/max": [
-        "/Users/caim014/Documents/restaurants/web/node_modules/umi"
+        "/Users/caim014/Documents/restaurants/node_modules/umi"
       ],
       "@umijs/max/typings": [
         "src/.umi/typings"

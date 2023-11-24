@@ -1,95 +1,79 @@
-import services from '@/services/demo';
 import {
   ActionType,
-  FooterToolbar,
   PageContainer,
-  ProDescriptions,
-  ProDescriptionsItemProps,
+  ProColumns,
   ProTable,
 } from '@ant-design/pro-components';
-import { Button, Divider, Drawer, message } from 'antd';
+import { Button, Divider, message } from 'antd';
 import React, { useRef, useState } from 'react';
 import CreateForm from './components/CreateForm';
-import UpdateForm, { FormValueType } from './components/UpdateForm';
+import UpdateForm from './components/UpdateForm';
 import ReservationController from '@/services/reservation/ReservationController';
 
 const { getList } = ReservationController
 
-/**
- * 添加节点
- * @param fields
- */
-const handleAdd = async (fields: API.UserInfo) => {
-  const hide = message.loading('正在添加');
-  try {
-    await addUser({ ...fields });
-    hide();
-    message.success('添加成功');
-    return true;
-  } catch (error) {
-    hide();
-    message.error('添加失败请重试！');
-    return false;
-  }
-};
+function ReservationList() {
+  /**
+   * 添加节点
+   * @param fields
+   */
+  const handleAdd = async (fields: API.UserInfo) => {
+    const hide = message.loading('正在添加');
+    try {
+      await ReservationController.createReservation({ ...fields });
+      hide();
+      message.success('添加成功');
+      return true;
+    } catch (error) {
+      hide();
+      message.error('添加失败请重试！');
+      return false;
+    }
+  };
+  
+  /**
+   * 更新节点
+   * @param fields
+   */
+  const handleUpdate = async (params: any) => {
+    const hide = message.loading('正在改期');
+    try {
+      console.log(params)
+      await ReservationController.reschedule({id: params.id, expected_arrival_time:params.expected_arrival_time});
+      hide();
+  
+      message.success('配置成功');
+      return true;
+    } catch (error) {
+      hide();
+      message.error('配置失败请重试！');
+      return false;
+    }
+  };
+  
+  /**
+   *  删除节点
+   * @param selectedRows
+   */
+  const handleRemove = async (id: string) => {
+    const hide = message.loading('正在删除');
+    try {
+      await ReservationController.deleteReservation({id});
+      hide();
+      message.success('删除成功，即将刷新');
+      return true;
+    } catch (error) {
+      hide();
+      message.error('删除失败，请重试');
+      return false;
+    }
+  };
 
-/**
- * 更新节点
- * @param fields
- */
-const handleUpdate = async (fields: FormValueType) => {
-  const hide = message.loading('正在配置');
-  try {
-    await modifyUser(
-      {
-        userId: fields.id || '',
-      },
-      {
-        name: fields.name || '',
-        nickName: fields.nickName || '',
-        email: fields.email || '',
-      },
-    );
-    hide();
-
-    message.success('配置成功');
-    return true;
-  } catch (error) {
-    hide();
-    message.error('配置失败请重试！');
-    return false;
-  }
-};
-
-/**
- *  删除节点
- * @param selectedRows
- */
-const handleRemove = async (selectedRows: API.UserInfo[]) => {
-  const hide = message.loading('正在删除');
-  if (!selectedRows) return true;
-  try {
-    await deleteUser({
-      userId: selectedRows.find((row) => row.id)?.id || '',
-    });
-    hide();
-    message.success('删除成功，即将刷新');
-    return true;
-  } catch (error) {
-    hide();
-    message.error('删除失败，请重试');
-    return false;
-  }
-};
-
-const ReservationList: React.FC<unknown> = () => {
   const [createModalVisible, handleModalVisible] = useState<boolean>(false);
   const [updateModalVisible, handleUpdateModalVisible] = useState<boolean>(false);
   const [stepFormValues, setStepFormValues] = useState({});
   const actionRef = useRef<ActionType>();
-  // const [row, setRow] = useState<API.Reservation>();
-  // const [selectedRowsState, setSelectedRows] = useState<API.Reservation[]>([]);
-  const columns: ProDescriptionsItemProps<API.Reservation>[] = [
+  const columns: ProColumns<API.Reservation>[] = [
     {
       title: '预约人',
       dataIndex: 'guest_name',
@@ -100,44 +84,60 @@ const ReservationList: React.FC<unknown> = () => {
             message: '名称为必填项',
           },
         ],
-      },
+      }
     },
     {
       title: '预约日期',
       dataIndex: 'expected_arrival_time',
-      valueType: 'text',
+      valueType: 'dateTime',
+      search: false
     },
     {
       title: '桌型',
       dataIndex: 'table_size',
-      valueType: 'text',
+      valueType: 'digit',
+      search: false
     },
     {
       title: '手机',
-      dataIndex: 'gest_contact_info.phone',
+      dataIndex: ['gest_contact_info', 'phone'],
       valueType: 'text',
+      // readonly: true
     },
     {
       title: '邮箱',
-      dataIndex: 'gest_contact_info.mail',
+      dataIndex: ['gest_contact_info', 'mail'],
       valueType: 'text',
+      search: false
+    },
+    {
+      title: '状态',
+      dataIndex: 'status',
+      valueType: 'text',
+      search: false,
+      readonly: true
     },
     {
       title: '操作',
       dataIndex: 'option',
       valueType: 'option',
-      render: (_, record) => (
+      readonly: true,
+      render: (text, record) => (
         <>
-          <a
-            onClick={() => {
-              handleUpdateModalVisible(true);
-              setStepFormValues(record);
-            }}
-          >
-            配置
-          </a>
-          <Divider type="vertical" />
-          <a href="">订阅警报</a>
+        <a
+          onClick={() => {
+            handleUpdateModalVisible(true);
+            setStepFormValues(record);
+          }}
+        >
+          改期
+        </a>
+        <Divider type="vertical" />
+        <a 
+          onClick={() => {
+            handleRemove(record.id);
+          }}
+        >删除</a>
         </>
       ),
     },
@@ -165,18 +165,12 @@ const ReservationList: React.FC<unknown> = () => {
             新建
           </Button>,
         ]}
-        request={async (params, sorter, filter) => {
-          const { data, success } = await getList({
-            ...params,
-            // FIXME: remove @ts-ignore
-            // @ts-ignore
-            sorter,
-            filter,
-          });
-          return {
-            data: data?.list || [],
-            success,
-          };
+        request={async (params)=>{
+          delete params.pageSize
+          delete params.current
+          const data = await getList(params)
+          console.log(data)
+          return {data: data.getList}
         }}
         columns={columns}
         // rowSelection={{
@@ -205,7 +199,7 @@ const ReservationList: React.FC<unknown> = () => {
           <Button type="primary">批量审批</Button>
         </FooterToolbar>
       )} */}
-      {/* <CreateForm
+      <CreateForm
         onCancel={() => handleModalVisible(false)}
         modalVisible={createModalVisible}
       >
@@ -223,9 +217,14 @@ const ReservationList: React.FC<unknown> = () => {
           type="form"
           columns={columns}
         />
-      </CreateForm> */}
-      {/* {stepFormValues && Object.keys(stepFormValues).length ? (
+      </CreateForm>
+      {stepFormValues && Object.keys(stepFormValues).length ? (
         <UpdateForm
+          onCancel={() => {
+            handleUpdateModalVisible(false);
+          }}
+          updateModalVisible={updateModalVisible}
+          values={stepFormValues}
           onSubmit={async (value) => {
             const success = await handleUpdate(value);
             if (success) {
@@ -236,14 +235,8 @@ const ReservationList: React.FC<unknown> = () => {
               }
             }
           }}
-          onCancel={() => {
-            handleUpdateModalVisible(false);
-            setStepFormValues({});
-          }}
-          updateModalVisible={updateModalVisible}
-          values={stepFormValues}
         />
-      ) : null} */}
+      ) : null}
 
       {/* <Drawer
         width={600}

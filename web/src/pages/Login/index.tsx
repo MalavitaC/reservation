@@ -3,7 +3,6 @@ import { Button, Form, Input } from 'antd';
 import AuthController from '@/services/auth/AuthController';
 import { useNavigate } from '@umijs/max';
 
-
 type FieldType = {
   username?: string;
   password?: string;
@@ -29,7 +28,6 @@ function LoginPage (){
   const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo);
   };
-
 
   return (
     <Form
@@ -58,13 +56,14 @@ function LoginPage (){
         <Input.Password />
       </Form.Item>
 
+      {/* <GetList /> */}
+
       <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
         <Button type="primary" htmlType="submit">
           Login
         </Button>
       </Form.Item>
     </Form>
-
   )
  
 };

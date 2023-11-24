@@ -38,9 +38,13 @@ input ReservationWhereInput {
   NOT: [ReservationWhereInput!]
   id: String
   guest_name: String
-  expected_arrival_time_min: DateTime
+  gest_contact_info: GestContactInfoInput
   owner: String
-  expected_arrival_time_mix: DateTime
+}
+
+input GestContactInfoInput {
+  phone: String!
+  mail: String
 }
 
 input OrderByArg {
@@ -58,9 +62,4 @@ input ReservationCreateInput {
   gest_contact_info: GestContactInfoInput!
   expected_arrival_time: DateTime!
   table_size: Int!
-}
-
-input GestContactInfoInput {
-  phone: String!
-  mail: String!
 }

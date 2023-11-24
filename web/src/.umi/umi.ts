@@ -3,7 +3,7 @@
 // DO NOT CHANGE IT MANUALLY!
 import './core/polyfill';
 import 'antd/dist/reset.css';
-import { renderClient } from '/Users/caim014/Documents/restaurants/web/node_modules/@umijs/renderer-react';
+import { renderClient } from '/Users/caim014/Documents/restaurants/node_modules/@umijs/renderer-react';
 import { getRoutes } from './core/route';
 import { createPluginManager } from './core/plugin';
 import { createHistory } from './core/history';
@@ -72,5 +72,5 @@ async function render() {
 render();
 
 window.g_umi = {
-  version: '4.0.87',
+  version: '4.0.88',
 };

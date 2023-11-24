@@ -1,11 +1,6 @@
 import yayJpg from '../assets/yay.jpg';
-
-import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
-// import { PropsWithChildren } from 'react';
-const client = new ApolloClient({
-  uri: 'http://localhost:3000/query', //之前搭建的GraphQL server地址
-  cache: new InMemoryCache(),
-});
+import { ApolloProvider } from '@apollo/client';
+import gqlClient from '@/lib/gqlClient'
 
 function HomePage() {
   return (
@@ -21,7 +16,7 @@ function HomePage() {
   );
 }
 const CustomApolloProvider = () => {
-  return <ApolloProvider client={client}><HomePage /></ApolloProvider>;
+  return <ApolloProvider client={gqlClient}><HomePage /></ApolloProvider>;
 };
 
 export default CustomApolloProvider;

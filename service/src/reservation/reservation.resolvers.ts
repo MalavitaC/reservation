@@ -1,12 +1,12 @@
-import 'reflect-metadata';
-import { Resolver, Query, Args, Mutation, Context } from '@nestjs/graphql';
 import { Inject } from '@nestjs/common';
-import { PrismaService } from '../core/prisma.service';
-import { ReservationModel } from './reservation.model';
-import { OrderByArg, ReservationWhereInput } from './dto/query.dto';
-import { ReservationCreateInput } from './dto/create.dto';
+import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Prisma, ReservationStatus, Role } from '@prisma/client';
+import 'reflect-metadata';
 import { Roles } from '../auth/decorators/role.decorator';
+import { PrismaService } from '../core/prisma.service';
+import { ReservationCreateInput } from './dto/create.dto';
+import { OrderByArg, ReservationWhereInput } from './dto/query.dto';
+import { ReservationModel } from './reservation.model';
 
 @Resolver(ReservationModel)
 export class ReservationResolver {
@@ -26,6 +26,12 @@ export class ReservationResolver {
     if (ctx.req.user.role === Role.gest) {
       if (!where) where = {};
       where.owner = ctx.req.user.id;
+    }
+    console.log(where);
+    if (where.gest_contact_info) {
+      where.gest_contact_info = {
+        is: where.gest_contact_info as Prisma.Gest_Contact_InfoWhereInput,
+      };
     }
     return this.prismaService.reservation.findMany({
       skip: skip || 0,
@@ -56,11 +62,13 @@ export class ReservationResolver {
   @Mutation(() => ReservationModel)
   async createReservation(
     @Args('data') data: ReservationCreateInput,
+    @Context() ctx,
   ): Promise<ReservationModel> {
+    console.log(data);
     return this.prismaService.reservation.create({
       data: {
         ...data,
-        owner: '',
+        owner: ctx.req.user.id,
         status: ReservationStatus.SUCCESS,
       },
     });

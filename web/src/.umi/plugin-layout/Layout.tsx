@@ -9,7 +9,7 @@ import type { IRoute } from 'umi';
 import React, { useMemo } from 'react';
 import {
   ProLayout,
-} from "/Users/caim014/Documents/restaurants/web/node_modules/@ant-design/pro-components";
+} from "/Users/caim014/Documents/restaurants/node_modules/@ant-design/pro-components";
 import './Layout.css';
 import Logo from './Logo';
 import Exception from './Exception';

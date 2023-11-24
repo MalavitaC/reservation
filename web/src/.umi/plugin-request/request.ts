@@ -6,8 +6,8 @@ import axios, {
   type AxiosRequestConfig,
   type AxiosResponse,
   type AxiosError,
-} from '/Users/caim014/Documents/restaurants/web/node_modules/axios';
-import useUmiRequest, { UseRequestProvider } from '/Users/caim014/Documents/restaurants/web/node_modules/@ahooksjs/use-request';
+} from '/Users/caim014/Documents/restaurants/node_modules/axios';
+import useUmiRequest, { UseRequestProvider } from '/Users/caim014/Documents/restaurants/node_modules/@ahooksjs/use-request';
 import { ApplyPluginsType } from 'umi';
 import { getPluginManager } from '../core/plugin';
 
@@ -26,7 +26,7 @@ import {
   PaginatedOptionsWithFormat,
   PaginatedParams,
   PaginatedResult,
-} from '/Users/caim014/Documents/restaurants/web/node_modules/@ahooksjs/use-request/es/types';
+} from '/Users/caim014/Documents/restaurants/node_modules/@ahooksjs/use-request/es/types';
 
 type ResultWithData< T = any > = { data?: T; [key: string]: any };
 

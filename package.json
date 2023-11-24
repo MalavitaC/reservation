@@ -1,16 +1,16 @@
 {
-  "name": "reservation",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "restaurants",
+  "version": "0.0.1",
+  "private": true,
+  "author": "CAIM014 <Carson.X.Cai.-ND@disney.com>",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "workspaces": [
-    "service",
-    "web"
+    "web",
+    "service"
   ],
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "dependencies": {
+  },
+  "devDependencies": {
+  }
 }

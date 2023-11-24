@@ -3,7 +3,7 @@
 /// <reference types="@ant-design/pro-components" />
 /// <reference types="antd" />
 
-    import type { ProLayoutProps, HeaderProps } from "/Users/caim014/Documents/restaurants/web/node_modules/@ant-design/pro-components";
+    import type { ProLayoutProps, HeaderProps } from "/Users/caim014/Documents/restaurants/node_modules/@ant-design/pro-components";
     import type InitialStateType from '@@/plugin-initialState/@@initialState';
            type InitDataType = ReturnType<typeof InitialStateType>;
         

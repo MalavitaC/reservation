@@ -5,7 +5,7 @@ export class GestContactInfoInput {
   @Field()
   phone: string;
 
-  @Field()
+  @Field((type) => String, { nullable: true })
   mail: string;
 }
 

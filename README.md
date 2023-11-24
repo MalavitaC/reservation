@@ -1,6 +1,6 @@
 ## 项目简介
 
-本项目使用workspace结构，分为service和web两部分。由于时间关系，目前只完成了service的开发，web部分还在开发中。
+本项目使用Monorepo结构，分为service和web两部分。
 
 ### service介绍
 
@@ -46,9 +46,25 @@ Gest用户只能查看/修改自己的预约记录。
 
 使用Nest的异常过滤器实现。打印错误日志，统一报错响应结构
 
-#### 单元测试
+### web介绍
 
-使用Nest的Testing实现。为Auth模块的登录接口、Reservation模块的查询接口编写了单元测试。
+#### 技术栈
+
+使用了React框架开发，基于Umi Max进行二次开发。
+
+#### 登录
+
+首页为登录页，用户登录后获取到JWT token，并存储到localStorage
+
+初始账号
+
+account: admin  password: admin
+
+Account: gest password: gest
+
+#### 预约
+
+登录后会跳转到预约列表页，通过列表，新建预约，改期，删除几个功能来体验接口功能
 
 ## 启动步骤
 
@@ -56,7 +72,7 @@ Gest用户只能查看/修改自己的预约记录。
 
 #### 安装依赖
 
-`cd service && npm install`
+`npm install --workspaces`
 
 #### 添加环境配置
 
@@ -64,11 +80,17 @@ Gest用户只能查看/修改自己的预约记录。
 
 配置运行环境、数据库连接、JWT秘钥等
 
-#### 初始化数据库
+> 建议NODE_ENV=develop方式启动
 
-可以导入根目录下的 `Reservation.json` 和 `User.json` 文件到数据库中，以便快速调试接口
+> 由于prisma限制，连接的mongodb实例，必须以副本集方式部署
 
 #### 启动
 
-`npm run start`
+启动service
+
+`npm run start -w service`
+
+启动web
+
+`npm run start -w web`
 
